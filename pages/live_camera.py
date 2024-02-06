@@ -28,6 +28,7 @@ class VideoProcessor:
         frame_ = frame.to_ndarray(format="bgr24")
         gray = cv2.cvtColor(frame_, cv2.COLOR_BGR2GRAY)
         faces = cascade.detectMultiScale(gray, 1.1, 3)
+        frame_ = np.copy(frame_)
 
         
         for x, y, w, h in faces:

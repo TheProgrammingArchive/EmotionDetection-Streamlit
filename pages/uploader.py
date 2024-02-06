@@ -4,7 +4,7 @@ import cv2
 from keras.models import load_model
 from keras.utils import img_to_array
 from PIL import Image
-
+import webbrowser
 emotion_labels = {0:'Angry', 1:'Disgust', 2:'Fear', 3:'Happy', 4:'Neutral', 5:'Sad', 6:'Surprise'}
 colors = {0:(0, 128, 255), 1:(246, 61, 252), 2:(246, 61, 252), 3:(0,255,90), 4:(204, 204, 204), 5:(237, 28, 63), 6:(252,238,33)}
 
@@ -43,15 +43,16 @@ if uploaded_file is not None:
 
             prediction = prediction_model.predict(roi_)[0]
             emotion = emotion_labels[prediction.argmax()]
-            age = str(int(age_model.predict(roi_)))
+            age = (int(age_model.predict(roi_)))
+
+            if age >= 20:
+                age -= 5
+
             label_pos = (x, y - 10)
             cv2.rectangle(k, (x, y), (x + w, y + h), (0, 255, 0), 3)
             cv2.putText(k, f'{emotion}, {age}', label_pos, cv2.FONT_HERSHEY_PLAIN, 2, colors[prediction.argmax()],
                         2)
+
     data = Image.fromarray(k)
-
-
-        # st.write(emotion)
-        # st.write(age)
 
     st.image(data)
